@@ -56,7 +56,7 @@ class AddHttp2ServerPush
         $headers = $this->fetchLinkableNodes($response)
             ->flatMap(function ($element) {
                 list($src, $href, $data, $rel, $type) = $element;
-                $rel = $type === 'module' ? 'modulepreload' : $rel
+                $rel = $type === 'module' ? 'modulepreload' : $rel;
                 
                 return [
                     $this->buildLinkHeaderString($src ?? '', $rel ?? null),
