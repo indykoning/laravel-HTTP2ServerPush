@@ -55,7 +55,9 @@ class AddHttp2ServerPush
         $excludeKeywords = $excludeKeywords ?? $this->getConfig('exclude_keywords', []);
         $headers = $this->fetchLinkableNodes($response)
             ->flatMap(function ($element) {
-               list($src, $href, $data, $rel) = $element;
+                list($src, $href, $data, $rel, $type) = $element;
+                $rel = $type === 'module' ? 'modulepreload' : $rel
+                
                 return [
                     $this->buildLinkHeaderString($src ?? '', $rel ?? null),
                     $this->buildLinkHeaderString($href ?? '', $rel ?? null),
@@ -117,7 +119,7 @@ class AddHttp2ServerPush
     {
         $crawler = $this->getCrawler($response);
 
-        return collect($crawler->filter('link:not([rel*="icon"]):not([rel="preconnect"]):not([rel="canonical"]):not([rel="manifest"]), script[src], img[src]:not([loading="lazy"]), object[data]')->extract(['src', 'href', 'data', 'rel']));
+        return collect($crawler->filter('link:not([rel*="icon"]):not([rel="preconnect"]):not([rel="canonical"]):not([rel="manifest"]), script[src], img[src]:not([loading="lazy"]), object[data]')->extract(['src', 'href', 'data', 'rel', 'type']));
     }
 
     /**
