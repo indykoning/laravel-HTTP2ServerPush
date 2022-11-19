@@ -55,10 +55,11 @@ class AddHttp2ServerPush
         $excludeKeywords = $excludeKeywords ?? $this->getConfig('exclude_keywords', []);
         $headers = $this->fetchLinkableNodes($response)
             ->flatMap(function ($element) {
+               list($src, $href, $data, $rel) = $element;
                 return [
-                    $this->buildLinkHeaderString($element['src'] ?? '', $element['rel'] ?? null),
-                    $this->buildLinkHeaderString($element['href'] ?? '', $element['rel'] ?? null),
-                    $this->buildLinkHeaderString($element['data'] ?? '', $element['rel'] ?? null),
+                    $this->buildLinkHeaderString($src ?? '', $rel ?? null),
+                    $this->buildLinkHeaderString($href ?? '', $rel ?? null),
+                    $this->buildLinkHeaderString($data ?? '', $rel ?? null),
                 ];
             })
             ->unique()
